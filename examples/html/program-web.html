@@ -15,6 +15,7 @@
             font-family: courier;
             font-size:   1.6em; 
             text-align:center;
+            font-weight: normal;
         }
         
         .button{
@@ -31,14 +32,47 @@
             font-family: courier;
             font-size:   0.8em;
             color: gray;
-        
         }
         
+        .desc2{
+            font-family: courier;
+            font-size:   2.0em;
+            font-weight: bold;
+            color: #5E5253;
+        }
+        
+        .side{
+            float: left;
+            width: 300px;
+            height: 100%;
+            background-color: #E6FFFE;
+            text-align: left;
+        }
+        
+        .demos{
+            margin-left: 320px;
+        }
+        
+        .master{
+            overflow: hidden;
+            width: 100%;
+            align-content: center;
+        }
+        
+        .radioUp{
+            font-family: courier;
+            font-size:   2.0em;
+        }
+        
+        .radio{
+            width: 2em;
+            height: 2em;
+        }     
     </style>
 
   </head>
   
-  <body>
+  <body onload="hideAll()">
     <script>    
 		window.onload = connect('linino.local');
 		
@@ -91,6 +125,7 @@
 		{
 			noTone(document.getElementById('txtPin').value );
 		}        
+        
         function sblink()
 		{
 			blink(document.getElementById('txtValue').value, document.getElementById('txtValue2').value, document.getElementById('txtPin').value);
@@ -98,33 +133,69 @@
         
         
     </script>
-    
-    <p id="label0"></p>
-    <span class="desc">Insert pin - ie: D13 for digital pin 13, A0 for analog pin 0</span><br>
-    <input type="text" id="txtPin" class="txtbox" placeholder="D13">
-    <br/><br/>
-    <span class="desc">Insert mode/value - ie: output to set a pin in output mode, 1 to set the value to the pin        </span><br>
-	<input type="label" id="txtValue" class="txtbox" placeholder="1">
-    <br/><br/>
-    <span class="desc">Insert period - ie: for pwm functions, set the period</span><br>
-	<input type="label" id="txtValue2" class="txtbox" placeholder="0">
+    <script>
+      function showElements(item)
+      {
+            hideAll();
+            var elements = document.getElementsByClassName(item.value);
+            for(var i = 0 ; i < elements.length ; i++)
+            {
+                elements[i].disabled = false;
+                if(elements[i].type=="button")
+                    elements[i].style.fontWeight = "bold" ;
+            }
+      }
+      function hideAll()
+      {
+          var elements = document.getElementsByClassName("def");
+          for(var i = 0 ; i < elements.length ; i++)
+          {
+              elements[i].disabled = true; 
+              elements[i].style.fontWeight = "normal" ;
+          }
+      }
+    </script> 
       
-    <br/><br/><br/><br/>
-    <input type="button" id="buttonPM" class="button" value="pinMode" onclick="pmode()">
-	<br/><br/>
-    <input type="button" id="buttonDR" class="button" value="digitalRead" onclick="dread()">
-	<input type="button" id="buttonDW" class="button" value="digitalWrite" onclick="dwrite()">
-    <input type="button" id="buttonBL" class="button" value="blink" onclick="sblink()">
-	<br/><br/>
-    <input type="button" id="buttonAR" class="button" value="analogRead" onclick="aread()">
-	<input type="button" id="buttonAW" class="button"value="analogWrite" onclick="awrite()">
-	<br/><br/>
-    <input type="button" id="buttonSW" class="button" value="servoWrite" onclick="swrite()">
-    <br/><br/>
-    <input type="button" id="buttonAWN" class="button" value="analogWritens" onclick="awritens()">
-    <br/><br/>
-    <input type="button" id="buttonTN" class="button" value="tone" onclick="stone()">
-    <input type="button" id="buttonATN" class="button" value="notone" onclick="notone()">
+    <div id="master" class="master">
+        <div id="side" class="side" >
+            <p class="radioUp">
+                <span class="desc2">Select your mode:</span><br><br>
+                <input type="radio" class="radio" name="menu" value="digital" id="radio1" onchange="showElements(this)"><label for="radio1">Digital</label><br>
+                <input type="radio" class="radio" name="menu" value="analog" id="radio2" onchange="showElements(this)"><label for="radio1">Analog</label><br>
+                <input type="radio" class="radio" name="menu" value="pwm" id="radio3" onchange="showElements(this)"><label for="radio1">PWM</label><br>
+                <input type="radio" class="radio" name="menu" value="servo" id="radio4" onchange="showElements(this)"><label for="radio1">Servo</label><br>
+            </p>
+        </div>
+
+        <div id="demos" class="demos">
+            <p id="label0"></p>
+            <span class="desc">Insert pin - ie: D13 for digital pin 13, A0 for analog pin 0</span><br>
+            <input class="txtbox" type="text" id="txtPin" placeholder="D13">
+            <br/><br/>
+            <span class="desc">Insert mode/value - ie: output to set a pin in output mode, 1 to set the value to the pin</span><br>
+            <input class="txtbox" type="label" id="txtValue" placeholder="1">
+            <br/><br/>
+            <span class="desc def digital pwm">Insert period</span><br>
+            <input class="txtbox def digital pwm" type="label" id="txtValue2" placeholder="0">
+
+            <br/><br/><br/><br/>
+            <input type="button" id="buttonPM" class="button digital pwm servo def" value="pinMode" onclick="pmode()">
+            <br/><br/>
+            <input type="button" id="buttonDR" class="button digital def" value="digitalRead" onclick="dread()">
+            <input type="button" id="buttonDW" class="button digital def" value="digitalWrite" onclick="dwrite()">
+            <input type="button" id="buttonBL" class="button digital def" value="blink" onclick="sblink()">
+            <br/><br/>
+            <input type="button" id="buttonAR" class="button analog def" value="analogRead" onclick="aread()">
+            <input type="button" id="buttonAW" class="button pwm def"value="analogWrite" onclick="awrite()">
+            <br/><br/>
+            <input type="button" id="buttonSW" class="button servo def" value="servoWrite" onclick="swrite()">
+            <br/><br/>
+            <input type="button" id="buttonAWN" class="button pwm def" value="analogWritens" onclick="awritens()" style="font-size:1.1em">
+            <br/><br/>
+            <input type="button" id="buttonTN" class="button pwm def" value="tone" onclick="stone()">
+            <input type="button" id="buttonATN" class="button pwm def" value="notone" onclick="notone()">
+        </div>
+    </div>
   </body>
 
 </html>
