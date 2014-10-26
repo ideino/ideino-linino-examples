@@ -16,6 +16,7 @@
             font-size:   1.6em; 
             text-align:center;
             font-weight: normal;
+            display: none;
         }
         
         .button{
@@ -26,6 +27,8 @@
             font-family: courier;
             font-size:   1.2em; 
             text-align:center;
+            font-weight: bold;
+            display : none;
         }
         
         .desc{
@@ -45,19 +48,13 @@
             float: left;
             width: 300px;
             height: 100%;
-            background-color: #E6FFFE;
+            background-color: #EBEBEB;
             text-align: left;
         }
         
         .demos{
             margin-left: 320px;
-        }
-        
-        .master{
-            overflow: hidden;
-            width: 100%;
-            align-content: center;
-        }
+        }      
         
         .radioUp{
             font-family: courier;
@@ -67,12 +64,9 @@
         .radio{
             width: 2em;
             height: 2em;
-        }     
+        }  
+        
     </style>
-
-  </head>
-  
-  <body onload="hideAll()">
     <script>    
 		window.onload = connect('linino.local');
 		
@@ -130,72 +124,125 @@
 		{
 			blink(document.getElementById('txtValue').value, document.getElementById('txtValue2').value, document.getElementById('txtPin').value);
 		}    
-        
-        
+               
     </script>
-    <script>
+    <script>       
+      var dreadDesc = ["Insert pin - ie: D13 for digital pin 13","",""],
+          dwriteDesc = ["Insert pin - ie: D13 for digital pin 13","Insert value - ie: 1 to set the value to the pin",""],
+          areadDesc = ["Insert pin - ie: A0 for analog pin 0","",""],
+          awriteDesc = ["Insert pin - ie: A0 for analog pin 0","Insert value - ie: 1 to set the value to the pin",""],
+          swriteDesc = ["Insert pin - ie: S5 for digital pin 5","Insert angle - ie: 180 to set the angle value",""],
+          awritensDesc = ["Insert pin - ie: P11 for pwm pin 11","Insert dutycycle (ns)","Insert period (ns)"],
+          stoneDesc = ["Insert pin - ie: P3 for pwm pin 3","Insert frequency (Hz)", "Insert dutation (ms)"],
+          notoneDesc = ["Insert pin - ie: P10 for pwm pin 10","",""],
+          sblinkDesc = ["Insert pin - ie: D4 for digital pin 4","Insert delay (ms)","Insert dutation (ms)"],
+          pmodeDesc = ["Insert pin - ie: D13 for digital pin 13, A0 for analog pin 0","Insert mode - ie: output to set a pin in output mode",""];
+                  
+      var elements, pin, runButton, selected;  
+        
       function showElements(item)
       {
-            hideAll();
-            var elements = document.getElementsByClassName(item.value);
-            for(var i = 0 ; i < elements.length ; i++)
+			selected = item.value;
+            switch(selected)
             {
-                elements[i].disabled = false;
-                if(elements[i].type=="button")
-                    elements[i].style.fontWeight = "bold" ;
+                    case "dread" :       
+                        setDesc(dreadDesc);
+                        break;
+                    case "dwrite" :
+                        setDesc(dwriteDesc);
+                        break;
+                    case "aread" :
+                        setDesc(areadDesc);
+                        break;
+                    case "awrite" :
+                        setDesc(awriteDesc);
+                        break;
+                    case "swrite" :
+                        setDesc(swriteDesc);
+                        break;
+                    case "awritens" :
+                        setDesc(awritensDesc);
+                        break;
+                    case "stone" :
+                        setDesc(stoneDesc);
+                        break;
+                    case "notone" :
+                        setDesc(notoneDesc);
+                        break;
+                    case "sblink" :
+                        setDesc(sblinkDesc);
+                        break;
+                    case "pmode" :
+                        setDesc(pmodeDesc);
+                        break;      
             }
       }
-      function hideAll()
+                
+      function setDesc(desc)
       {
-          var elements = document.getElementsByClassName("def");
-          for(var i = 0 ; i < elements.length ; i++)
+          var labels = document.getElementsByClassName("desc"),
+              inputs = document.getElementsByClassName("txtbox");
+          
+              runButton = document.getElementById("buttonRUN");
+          
+          for(var i=0; i<inputs.length; i++)
           {
-              elements[i].disabled = true; 
-              elements[i].style.fontWeight = "normal" ;
+              if(desc[i] == "")
+              {
+                inputs[i].style.display = "none";
+                labels[i].style.display = "none";
+              }
+              else
+              {
+                inputs[i].style.display = "inline";
+                labels[i].style.display = "inline";
+              }
+              
+              labels[i].textContent = desc[i];
           }
+          runButton.style.display = "inline";
+      }
+      
+	  function runSample()
+      {
+		  var cmd = selected+"();";
+          eval(cmd);
       }
     </script> 
-      
-    <div id="master" class="master">
+  </head>
+  
+  <body>   
         <div id="side" class="side" >
             <p class="radioUp">
-                <span class="desc2">Select your mode:</span><br><br>
-                <input type="radio" class="radio" name="menu" value="digital" id="radio1" onchange="showElements(this)"><label for="radio1">Digital</label><br>
-                <input type="radio" class="radio" name="menu" value="analog" id="radio2" onchange="showElements(this)"><label for="radio1">Analog</label><br>
-                <input type="radio" class="radio" name="menu" value="pwm" id="radio3" onchange="showElements(this)"><label for="radio1">PWM</label><br>
-                <input type="radio" class="radio" name="menu" value="servo" id="radio4" onchange="showElements(this)"><label for="radio1">Servo</label><br>
+                <span class="desc2">Select your sample:</span><br><br>
+                <input type="radio" class="radio" name="menu" value="pmode" id="radio0" onchange="showElements(this)"><label for="radio1">Pin Mode</label><br>
+                
+                <input type="radio" class="radio" name="menu" value="dread" id="radio1" onchange="showElements(this)"><label for="radio1">Digital Read</label><br>
+                <input type="radio" class="radio" name="menu" value="dwrite" id="radio2" onchange="showElements(this)"><label for="radio1">Digital Write</label><br>
+                <input type="radio" class="radio" name="menu" value="aread" id="radio3" onchange="showElements(this)"><label for="radio1">Analog Read</label><br>
+                <input type="radio" class="radio" name="menu" value="awrite" id="radio4" onchange="showElements(this)"><label for="radio1">Analog Write</label><br>
+                
+                <input type="radio" class="radio" name="menu" value="swrite" id="radio5" onchange="showElements(this)"><label for="radio1">Servo Write</label><br>
+                <input type="radio" class="radio" name="menu" value="awritens" id="radio6" onchange="showElements(this)"><label for="radio1">Analog Writens</label><br>
+                <input type="radio" class="radio" name="menu" value="stone" id="radio7" onchange="showElements(this)"><label for="radio1">Tone</label><br>
+                <input type="radio" class="radio" name="menu" value="notone" id="radio8" onchange="showElements(this)"><label for="radio1">No Tone</label><br>
+                <input type="radio" class="radio" name="menu" value="sblink" id="radio9" onchange="showElements(this)"><label for="radio1">Blink</label><br>
             </p>
         </div>
 
         <div id="demos" class="demos">
-            <p id="label0"></p>
-            <span class="desc">Insert pin - ie: D13 for digital pin 13, A0 for analog pin 0</span><br>
-            <input class="txtbox" type="text" id="txtPin" placeholder="D13">
+            <span class="desc"></span><br>
+            <input class="txtbox" type="label" id="txtPin">
             <br/><br/>
-            <span class="desc">Insert mode/value - ie: output to set a pin in output mode, 1 to set the value to the pin</span><br>
-            <input class="txtbox" type="label" id="txtValue" placeholder="1">
+            <span class="desc"></span><br>
+            <input class="txtbox" type="label" id="txtValue">
             <br/><br/>
-            <span class="desc def digital pwm">Insert period</span><br>
-            <input class="txtbox def digital pwm" type="label" id="txtValue2" placeholder="0">
+            <span class="desc"></span><br>
+            <input class="txtbox" type="label" id="txtValue2">
 
             <br/><br/><br/><br/>
-            <input type="button" id="buttonPM" class="button digital pwm servo def" value="pinMode" onclick="pmode()">
-            <br/><br/>
-            <input type="button" id="buttonDR" class="button digital def" value="digitalRead" onclick="dread()">
-            <input type="button" id="buttonDW" class="button digital def" value="digitalWrite" onclick="dwrite()">
-            <input type="button" id="buttonBL" class="button digital def" value="blink" onclick="sblink()">
-            <br/><br/>
-            <input type="button" id="buttonAR" class="button analog def" value="analogRead" onclick="aread()">
-            <input type="button" id="buttonAW" class="button pwm def"value="analogWrite" onclick="awrite()">
-            <br/><br/>
-            <input type="button" id="buttonSW" class="button servo def" value="servoWrite" onclick="swrite()">
-            <br/><br/>
-            <input type="button" id="buttonAWN" class="button pwm def" value="analogWritens" onclick="awritens()" style="font-size:1.1em">
-            <br/><br/>
-            <input type="button" id="buttonTN" class="button pwm def" value="tone" onclick="stone()">
-            <input type="button" id="buttonATN" class="button pwm def" value="notone" onclick="notone()">
+            <input type="button" id="buttonRUN" class="button" value="run" onclick="eval(selected+'();')">            
         </div>
-    </div>
   </body>
 
 </html>
