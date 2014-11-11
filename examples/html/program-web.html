@@ -3,8 +3,8 @@
   
   <head>
     <meta http-equiv="content-type" content="text/html; charset=windows-1250">
-    <script src="http://linino.local:2424/js/ideino-linino-lib/socket.io.js"></script>
-    <script src="http://linino.local:2424/js/ideino-linino-lib/ideino-linino-lib-client.js"></script>
+    <script src="http://linino.local:2424/js/linino/socket.io.js"></script>
+    <script src="http://linino.local:2424/js/linino/ideino-linino-lib-client.js"></script>
     
     <style>
         .txtbox{
@@ -54,19 +54,25 @@
         
         .demos{
             margin-left: 320px;
-        }      
+        }
+        
+        .master{
+            overflow: hidden;
+            width: 100%;
+            align-content: center;
+        }
         
         .radioUp{
             font-family: courier;
-            font-size:   2.0em;
+            font-size:   1.5em;
         }
         
         .radio{
-            width: 2em;
-            height: 2em;
+            width: 1.5em;
+            height: 1.5em;
         }  
-        
     </style>
+
     <script>    
 		window.onload = connect('linino.local');
 		
@@ -124,26 +130,29 @@
 		{
 			blink(document.getElementById('txtValue').value, document.getElementById('txtValue2').value, document.getElementById('txtPin').value);
 		}    
-               
+        
+        
     </script>
-    <script>       
-      var dreadDesc = ["Insert pin - ie: D13 for digital pin 13","",""],
-          dwriteDesc = ["Insert pin - ie: D13 for digital pin 13","Insert value - ie: 1 to set the value to the pin",""],
-          areadDesc = ["Insert pin - ie: A0 for analog pin 0","",""],
-          awriteDesc = ["Insert pin - ie: A0 for analog pin 0","Insert value - ie: 1 to set the value to the pin",""],
+    <script>
+        
+      var dreadDesc = ["Insert pin - ie: D13 for digital pin 13","Value",""],
+          dwriteDesc = ["Insert pin - ie: D13 for digital pin 13","Insert value - ie: 1 to set the value to the pin [values admitted 0 - 1023]",""],
+          areadDesc = ["Insert pin - ie: A0 for analog pin 0","Value",""],
+          awriteDesc = ["Insert pin - ie: A0 for analog pin 0","Insert value - ie: 1 to set the value to the pin [values admitted 0 - 1023]",""],
           swriteDesc = ["Insert pin - ie: S5 for digital pin 5","Insert angle - ie: 180 to set the angle value",""],
           awritensDesc = ["Insert pin - ie: P11 for pwm pin 11","Insert dutycycle (ns)","Insert period (ns)"],
           stoneDesc = ["Insert pin - ie: P3 for pwm pin 3","Insert frequency (Hz)", "Insert dutation (ms)"],
           notoneDesc = ["Insert pin - ie: P10 for pwm pin 10","",""],
           sblinkDesc = ["Insert pin - ie: D4 for digital pin 4","Insert delay (ms)","Insert dutation (ms)"],
           pmodeDesc = ["Insert pin - ie: D13 for digital pin 13, A0 for analog pin 0","Insert mode - ie: output to set a pin in output mode",""];
-                  
-      var elements, pin, runButton, selected;  
+                        
+                        
+      var elements, pin, runButton;
+          
         
       function showElements(item)
       {
-			selected = item.value;
-            switch(selected)
+            switch(item.value)
             {
                     case "dread" :       
                         setDesc(dreadDesc);
@@ -177,7 +186,7 @@
                         break;      
             }
       }
-                
+        
       function setDesc(desc)
       {
           var labels = document.getElementsByClassName("desc"),
@@ -202,16 +211,17 @@
           }
           runButton.style.display = "inline";
       }
-      
-	  function runSample()
+      function runSample()
       {
-		  var cmd = selected+"();";
-          eval(cmd);
+          
       }
     </script> 
   </head>
   
-  <body>   
+  <body onload="hideAll()">
+    
+      
+    <div id="master" class="master">
         <div id="side" class="side" >
             <p class="radioUp">
                 <span class="desc2">Select your sample:</span><br><br>
@@ -223,7 +233,7 @@
                 <input type="radio" class="radio" name="menu" value="awrite" id="radio4" onchange="showElements(this)"><label for="radio1">Analog Write</label><br>
                 
                 <input type="radio" class="radio" name="menu" value="swrite" id="radio5" onchange="showElements(this)"><label for="radio1">Servo Write</label><br>
-                <input type="radio" class="radio" name="menu" value="awritens" id="radio6" onchange="showElements(this)"><label for="radio1">Analog Writens</label><br>
+                <input type="radio" class="radio" name="menu" value="awritens" id="radio6" onchange="showElements(this)"><label for="radio1">Analog Write ns</label><br>
                 <input type="radio" class="radio" name="menu" value="stone" id="radio7" onchange="showElements(this)"><label for="radio1">Tone</label><br>
                 <input type="radio" class="radio" name="menu" value="notone" id="radio8" onchange="showElements(this)"><label for="radio1">No Tone</label><br>
                 <input type="radio" class="radio" name="menu" value="sblink" id="radio9" onchange="showElements(this)"><label for="radio1">Blink</label><br>
@@ -231,6 +241,7 @@
         </div>
 
         <div id="demos" class="demos">
+            <p id="label0"></p>
             <span class="desc"></span><br>
             <input class="txtbox" type="label" id="txtPin">
             <br/><br/>
@@ -241,8 +252,10 @@
             <input class="txtbox" type="label" id="txtValue2">
 
             <br/><br/><br/><br/>
-            <input type="button" id="buttonRUN" class="button" value="run" onclick="eval(selected+'();')">            
+            <input type="button" id="buttonRUN" class="button" value="run" onclick="runSample">
+            
         </div>
+    </div>
   </body>
 
 </html>
