@@ -22,8 +22,8 @@ var linino = require('ideino-linino-lib'),
 //local variable 
 var pin8 = board.pin.digital.D8,
     html_img_id = 'lightbulb',    
-    light_off ='"/img/lightbulb-off.jpg"',
-    light_on = '"/img/lightbulb-on.jpg"';
+    light_off ='/img/lightbulb-off.jpg',
+    light_on = '/img/lightbulb-on.jpg';
 
 board.connect(function(){
     //SIMPLE HTTP SERVER

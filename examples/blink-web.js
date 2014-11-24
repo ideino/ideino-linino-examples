@@ -16,8 +16,8 @@ var linino = require('ideino-linino-lib'),
     
 var pin13 = board.pin.digital.D13,
     html_img_id = 'lightbulb',    
-    light_off ='"/img/lightbulb-off.jpg"',
-    light_on = '"/img/lightbulb-on.jpg"',
+    light_off ='/img/lightbulb-off.jpg',
+    light_on = '/img/lightbulb-on.jpg',
     light = light_off, 
     ctrl = board.LOW;
     
