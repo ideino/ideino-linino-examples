@@ -39,7 +39,7 @@
         
         .desc2{
             font-family: courier;
-            font-size:   2.0em;
+            font-size:   1.0em;
             font-weight: bold;
             color: #5E5253;
         }
@@ -64,7 +64,7 @@
         
         .radioUp{
             font-family: courier;
-            font-size:   1.5em;
+            font-size:   1.0em;
         }
         
         .radio{
@@ -135,54 +135,64 @@
     </script>
     <script>
         
-      var dreadDesc = ["Insert pin - ie: D13 for digital pin 13","Value",""],
-          dwriteDesc = ["Insert pin - ie: D13 for digital pin 13","Insert value - ie: 1 to set the value to the pin [values admitted 0 - 1023]",""],
+      var dreadDesc = ["Insert pin - ie: D9 for digital pin 9","Value",""],
+          dwriteDesc = ["Insert pin - ie: D13 for digital pin 13","Insert value - ie: 1 to set the value to the pin [values admitted 0 - 1]",""],
           areadDesc = ["Insert pin - ie: A0 for analog pin 0","Value",""],
-          awriteDesc = ["Insert pin - ie: A0 for analog pin 0","Insert value - ie: 1 to set the value to the pin [values admitted 0 - 1023]",""],
-          swriteDesc = ["Insert pin - ie: S5 for digital pin 5","Insert angle - ie: 180 to set the angle value",""],
-          awritensDesc = ["Insert pin - ie: P11 for pwm pin 11","Insert dutycycle (ns)","Insert period (ns)"],
-          stoneDesc = ["Insert pin - ie: P3 for pwm pin 3","Insert frequency (Hz)", "Insert dutation (ms)"],
+          awriteDesc = ["Insert pin - ie: A0 for analog pin 0","Insert value - ie: 500 to set the value to the pin [values admitted 0 - 1023]",""],
+          swriteDesc = ["Insert pin - ie: S5 for digital pin 5","Insert angle - ie: 180 to set the angle value [values admitted 0 - 180]",""],
+          awritensDesc = ["Insert pin - ie: P11 for pwm pin 11","Insert dutycycle (nanoseconds)","Insert period (nanoseconds)"],
+          stoneDesc = ["Insert pin - ie: P3 for pwm pin 3","Insert frequency (Hz)", "Insert duration (milliseconds)"],
           notoneDesc = ["Insert pin - ie: P10 for pwm pin 10","",""],
-          sblinkDesc = ["Insert pin - ie: D4 for digital pin 4","Insert delay (ms)","Insert dutation (ms)"],
-          pmodeDesc = ["Insert pin - ie: D13 for digital pin 13, A0 for analog pin 0","Insert mode - ie: output to set a pin in output mode",""];
+          sblinkDesc = ["Insert pin - ie: D4 for digital pin 4","Insert delay (milliseconds)","Insert dutation (milliseconds)"],
+          pmodeDesc = ["Insert pin - ie: D13 for digital pin 13, A0 for analog pin 0, S5 for servo mode on digital pin 5, P3 for pwm mode on digital pin 3","Insert mode - ie: output to set a pin in output mode",""];
                         
                         
       var elements, pin, runButton;
-          
-        
-      function showElements(item)
-      {
+
+	  function showElements(item){
+	  
+	  	var run = document.getElementById("buttonRUN");
             switch(item.value)
             {
                     case "dread" :       
                         setDesc(dreadDesc);
+						run.onclick = function (){dread();};
                         break;
                     case "dwrite" :
                         setDesc(dwriteDesc);
+						run.onclick = function (){dwrite();};
                         break;
                     case "aread" :
                         setDesc(areadDesc);
+						run.onclick = function (){aread();};
                         break;
                     case "awrite" :
                         setDesc(awriteDesc);
+						run.onclick = function (){awrite();};
                         break;
                     case "swrite" :
                         setDesc(swriteDesc);
+						run.onclick = function (){swrite();};
                         break;
                     case "awritens" :
                         setDesc(awritensDesc);
+						run.onclick = function (){awritens();};
                         break;
                     case "stone" :
                         setDesc(stoneDesc);
+						run.onclick = function (){stone();};
                         break;
                     case "notone" :
                         setDesc(notoneDesc);
+						run.onclick = function (){notone();};
                         break;
                     case "sblink" :
                         setDesc(sblinkDesc);
+						run.onclick = function (){sblink();};
                         break;
                     case "pmode" :
                         setDesc(pmodeDesc);
+						run.onclick = function (){pmode();};
                         break;      
             }
       }
@@ -211,14 +221,11 @@
           }
           runButton.style.display = "inline";
       }
-      function runSample()
-      {
-          
-      }
+
     </script> 
   </head>
   
-  <body onload="hideAll()">
+  <body>
     
       
     <div id="master" class="master">
@@ -252,7 +259,7 @@
             <input class="txtbox" type="label" id="txtValue2">
 
             <br/><br/><br/><br/>
-            <input type="button" id="buttonRUN" class="button" value="run" onclick="runSample">
+            <input type="button" id="buttonRUN" class="button" value="Run">
             
         </div>
     </div>
