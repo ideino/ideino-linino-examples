@@ -6,6 +6,6 @@
     "name": "Ideino Team"
   },
   "dependencies": {
-      "node-static": "*"
+      "node-static": "0.7.6"
   }
 }
